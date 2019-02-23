@@ -2,7 +2,7 @@
 
 const { Controller } = require('egg');
 
-class SiteController extends Controller {
+class AdminProductController extends Controller {
 
   async createNewProduct() {
     const { product } = this.ctx.request.body;
@@ -28,4 +28,4 @@ class SiteController extends Controller {
 
 }
 
-module.exports = SiteController;
+module.exports = AdminProductController;
