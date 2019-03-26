@@ -31,10 +31,18 @@ module.exports = app => {
   // router.post('/sendVerifyCode', controller.site.sendVerifyCode);
 
   router.post('/api/v1/admin/product', controller.adminProduct.createNewProduct);
+  router.get('/api/v1/admin/product', controller.adminProduct.listProducts);
+  router.get('/api/v1/admin/product/:id', controller.adminProduct.getProduct);
+  router.patch('/api/v1/admin/product/:id', controller.adminProduct.updateProduct);
+
+  router.get('/api/v1/site/product/:id', controller.product.getProduct);
 
   console.log(controller);
 
-  router.get('/api/v1/admin/product', controller.adminProduct.listProducts);
+  router.post('/api/v1/admin/goods', controller.adminGoods.createNewGoods);
+  router.get('/api/v1/admin/goods', controller.adminGoods.listGoods);
+  // router.get('/api/v1/admin/goods/:id', controller.adminGoods.getGoods);
+  // router.patch('/api/v1/admin/goods/:id', controller.adminGoods.updateGoods);
 
   // B端API 通用前缀： /api/v1/admin/
   // 商品

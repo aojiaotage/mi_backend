@@ -55,6 +55,22 @@ module.exports = app => {
 
     sequelizeQuery.where = {};
 
+    if (ids) {
+      if (ids.length === 1) {
+        sequelizeQuery.where.id = {
+          [Op.eq]: ids[0],
+        };
+      } else {
+        sequelizeQuery.where.id = {
+          [Op.in]: ids,
+        };
+      }
+    } else if (last_id) {
+      sequelizeQuery.where.id = {
+        [Op.gt]: last_id,
+      };
+    }
+
     if (last_id) {
       sequelizeQuery.where.id = {
         [Op.gt]: last_id,
@@ -68,19 +84,18 @@ module.exports = app => {
     return products;
   };
 
-  Model.updateProduct = async (product) => {
+  Model.updateProduct = async product => {
     const { id } = product;
     // validate id, something
 
-    const updated = await Model.update({
+    const updatedRows = await Model.update(product, {
       where: {
         id: {
-          [Op.eq]: 'id',
+          [Op.eq]: id,
         },
       },
-      values: product,
     });
-    return updated;
+    return updatedRows;
   };
 
   Model.sync();
