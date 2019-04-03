@@ -1,0 +1,27 @@
+'use strict';
+
+const { Controller } = require('egg');
+
+class UserController extends Controller {
+
+  async getUser() {
+
+    const { id } = this.ctx.session.user;
+
+    const user = await this.ctx.service.user.getUserInfo(id,
+      { isUserHimself: true });
+
+    this.ctx.body = {
+      user,
+    };
+  }
+
+  async logout() {
+    if (this.ctx.session.user) this.ctx.session.user = undefined;
+    this.ctx.body = {
+      code: 0,
+    };
+  }
+}
+
+module.exports = UserController;

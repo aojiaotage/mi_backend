@@ -91,7 +91,7 @@ module.exports = app => {
 
     const { encrypted: reEncryptedPassword } = await genEncryptedPassword(password,
       found.salt);
-    
+
     if (foundPassword !== reEncryptedPassword) {
       throw new app.error.InvalidParam(
         'username or password',
@@ -103,6 +103,31 @@ module.exports = app => {
     return {
       id: found.id,
     };
+  };
+
+  Model.getUser = async (userId, select) => {
+    const [found] = await Model.findAll({
+      attributes: select,
+      where: {
+        id: {
+          [Op.eq]: userId,
+        },
+      },
+    });
+
+    if (!found) {
+      throw new app.error.InvalidParam(
+        'userId',
+        'no such userId',
+        '用户不存在'
+      );
+    }
+
+    console.log(userId);
+    console.log(select);
+    console.log(found);
+
+    return found;
   };
 
   Model.sync();

@@ -24,11 +24,10 @@ class Product extends Service {
       this.ctx.service.goods.listGoods({ product_id: id }),
     ];
 
-    // TODO need to check the stock here.
-    // const inventoryInfo = await InventoryService.getGoodsInventoryInfo();
-
     const [goodsList] = await Promise.all(
       ps);
+
+    await this.ctx.service.inventory.fillGoodsRealInventory(goodsList);
 
     return {
       product,

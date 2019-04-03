@@ -13,7 +13,7 @@ module.exports = appInfo => {
     csrf: {
       enable: false,
     },
-    domainWhiteList: [ 'http://localhost:8080' ],
+    domainWhiteList: ['http://localhost:8080'],
   };
 
   config.sequelize = {
@@ -40,13 +40,20 @@ module.exports = appInfo => {
 
   config.onerror = {
     json(err, ctx) {
+      console.log(err.httpStatusCode);
       const { code, httpStatusCode, httpMsg } = err;
-      if (httpStatusCode) ctx.statusCode = httpStatusCode;
+      if (httpStatusCode) ctx.status = httpStatusCode;
       ctx.body = {
         code,
         msg: httpMsg,
       };
     },
+  };
+
+  config.middleware = ['userAuth'];
+
+  config.userAuth = {
+    match: '/api/v1/user',
   };
 
   return config;

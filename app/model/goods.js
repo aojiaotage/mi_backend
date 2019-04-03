@@ -5,7 +5,7 @@ const uuid = require('uuid/v4');
 module.exports = app => {
 
   const { Sequelize } = app;
-  const { STRING, UUID, TEXT, BOOLEAN, Op } = Sequelize;
+  const { STRING, UUID, TEXT, BOOLEAN, Op, INTEGER } = Sequelize;
 
   const Model = app.model.define('mi_goods',
     {
@@ -18,6 +18,9 @@ module.exports = app => {
       },
       name: {
         type: STRING(32),
+      },
+      inventory: {
+        type: INTEGER,
       },
       address_type: {
         type: STRING(16),
@@ -98,7 +101,7 @@ module.exports = app => {
       {
         where: {
           id: {
-            [Op.eq]: 'id',
+            [Op.eq]: id,
           },
         },
       });

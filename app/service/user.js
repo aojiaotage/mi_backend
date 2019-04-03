@@ -4,7 +4,8 @@ const { Service } = require('egg');
 
 class User extends Service {
   async createUserWithUnPw(username, password) {
-    const created = await this.ctx.model.User.createUserWithUnPw(username, password);
+    const created = await this.ctx.model.User.createUserWithUnPw(username,
+      password);
     return created;
   }
 
@@ -13,6 +14,15 @@ class User extends Service {
     return found;
   }
 
+  async getUserInfo(userId, opts) {
+    const { isUserHimself } = opts;
+    const select = ['id'];
+    if (isUserHimself) {
+      select.push('phoneNumber');
+    }
+    const user = await this.ctx.model.User.getUser(userId, select);
+    return user;
+  }
 }
 
 module.exports = User;
