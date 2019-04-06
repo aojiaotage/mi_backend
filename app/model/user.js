@@ -41,6 +41,12 @@ module.exports = app => {
       phoneNumber: {
         type: STRING(32),
       },
+      icon: {
+        type: TEXT,
+      },
+      email: {
+        type: STRING(64),
+      },
     }, {
       indexes: [
         {

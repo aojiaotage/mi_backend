@@ -11,8 +11,15 @@ class UserController extends Controller {
     const user = await this.ctx.service.user.getUserInfo(id,
       { isUserHimself: true });
 
+    // TODO get user's order counts.
+    // const unpaidOrderCount = await this.ctx.service.order.getUnpaidOrderCount();
+    // const sendOrderCount = await this.ctx.service.order.getSendOrderCount();
+
     this.ctx.body = {
-      user,
+      code: 0,
+      data: {
+        user,
+      },
     };
   }
 

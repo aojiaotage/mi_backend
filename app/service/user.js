@@ -18,7 +18,7 @@ class User extends Service {
     const { isUserHimself } = opts;
     const select = ['id'];
     if (isUserHimself) {
-      select.push('phoneNumber');
+      select.push('phoneNumber', 'email', 'phoneNumber', 'username', 'icon');
     }
     const user = await this.ctx.model.User.getUser(userId, select);
     return user;
