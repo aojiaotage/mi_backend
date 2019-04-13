@@ -89,20 +89,21 @@ module.exports = app => {
       throw new app.error.InvalidParam(
         'username',
         'no such username',
-        '账户不存在'
+        '账户不存在',
       );
     }
 
     const foundPassword = found.password;
 
-    const { encrypted: reEncryptedPassword } = await genEncryptedPassword(password,
+    const { encrypted: reEncryptedPassword } = await genEncryptedPassword(
+      password,
       found.salt);
 
     if (foundPassword !== reEncryptedPassword) {
       throw new app.error.InvalidParam(
         'username or password',
         'username or password do not match',
-        '用户名或密码不正确'
+        '用户名或密码不正确',
       );
     }
 
@@ -125,15 +126,22 @@ module.exports = app => {
       throw new app.error.InvalidParam(
         'userId',
         'no such userId',
-        '用户不存在'
+        '用户不存在',
       );
     }
 
-    console.log(userId);
-    console.log(select);
-    console.log(found);
+    return found.toJSON();
+  };
 
-    return found;
+  Model.updateUserById = async (userId, user) => {
+    const result = await Model.update(user, {
+      where: {
+        id: {
+          [Op.eq]: userId,
+        },
+      },
+    });
+    return result;
   };
 
   Model.sync();

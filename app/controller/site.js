@@ -12,6 +12,7 @@ class SiteController extends Controller {
 
     this.ctx.body = {
       code: 0,
+      status: 200,
       data: {
         user: createdUser,
       },
@@ -19,15 +20,16 @@ class SiteController extends Controller {
   }
 
   async loginWithUnPw() {
-    const { username, password } = this.ctx.request.body;
+    const { username, pwd } = this.ctx.request.body;
 
     const foundUser = await this.ctx.service.user.loginWithUnPw(username,
-      password);
+      pwd);
 
     this.ctx.session.user = { id: foundUser.id };
 
     this.ctx.body = {
       code: 0,
+      status: 200,
       data: {
         attempt: this.ctx.session.attempts,
         user: {

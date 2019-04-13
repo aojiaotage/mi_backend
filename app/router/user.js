@@ -8,5 +8,6 @@ module.exports = app => {
 
   router.get('/api/v1/user/', controller.user.getUser);
   router.post('/api/v1/user/logout', controller.user.logout);
+  router.patch('/api/v1/user', controller.user.updateUser);
 
 };

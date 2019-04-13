@@ -23,6 +23,11 @@ class User extends Service {
     const user = await this.ctx.model.User.getUser(userId, select);
     return user;
   }
+
+  async updateUserById(userId, user) {
+    const r = await this.ctx.model.User.updateUserById(userId, user);
+    return r;
+  }
 }
 
 module.exports = User;

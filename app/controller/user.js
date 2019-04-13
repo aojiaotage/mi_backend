@@ -8,8 +8,15 @@ class UserController extends Controller {
 
     const { id } = this.ctx.session.user;
 
-    const user = await this.ctx.service.user.getUserInfo(id,
-      { isUserHimself: true });
+    const user = (await this.ctx.service.user.getUserInfo(id,
+      { isUserHimself: true }));
+
+    user.mobile = user.phoneNumber;
+    user.userName = user.username;
+
+    delete user.username;
+    delete user.phoneNumber;
+
 
     // TODO get user's order counts.
     // const unpaidOrderCount = await this.ctx.service.order.getUnpaidOrderCount();
@@ -20,6 +27,17 @@ class UserController extends Controller {
       data: {
         user,
       },
+    };
+  }
+
+  async updateUser() {
+    const { user } = this.ctx.request.body;
+    await this.ctx.service.user.updateUserById(this.ctx.session.user.id, user);
+
+    this.ctx.body = {
+      code: 0,
+      status: 200,
+      data: {},
     };
   }
 
