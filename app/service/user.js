@@ -24,8 +24,8 @@ class User extends Service {
     return user;
   }
 
-  async updateUserById(userId, user) {
-    const r = await this.ctx.model.User.updateUserById(userId, user);
+  async updateUser(userId, user) {
+    const r = await this.ctx.model.User.updateUser(userId, user);
     return r;
   }
 }

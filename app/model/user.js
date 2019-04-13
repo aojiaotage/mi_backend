@@ -133,7 +133,7 @@ module.exports = app => {
     return found.toJSON();
   };
 
-  Model.updateUserById = async (userId, user) => {
+  Model.updateUser = async (userId, user) => {
     const result = await Model.update(user, {
       where: {
         id: {

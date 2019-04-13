@@ -32,7 +32,7 @@ class UserController extends Controller {
 
   async updateUser() {
     const { user } = this.ctx.request.body;
-    await this.ctx.service.user.updateUserById(this.ctx.session.user.id, user);
+    await this.ctx.service.user.updateUser(this.ctx.session.user.id, user);
 
     this.ctx.body = {
       code: 0,
