@@ -53,7 +53,7 @@ module.exports = appInfo => {
   config.middleware = ['userAuth'];
 
   config.userAuth = {
-    match: '/api/v1/user',
+    match: ['/api/v1/user', '/api/v1/address'],
   };
 
   return config;
