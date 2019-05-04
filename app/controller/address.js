@@ -27,7 +27,11 @@ class AddressController extends Controller {
     this.ctx.body = {
       code: 0,
       status: 200,
-      data: addresses,
+      data: addresses.map(a => {
+        const r = a.toJSON();
+        r.address_id = a.id;
+        return r;
+      }),
       result: 'ok',
     };
   }
@@ -42,9 +46,7 @@ class AddressController extends Controller {
     this.ctx.body = {
       code: 0,
       status: 200,
-      data: {
-        address,
-      },
+      data: address,
     };
   }
 
@@ -64,9 +66,10 @@ class AddressController extends Controller {
 
   async updateAddressById() {
     const { id } = this.ctx.params;
-    const { address } = this.ctx.request.body;
+    const address = this.ctx.request.body;
     address.id = id;
     address.user_id = this.ctx.session.user.id;
+    address.is_default = !!address.is_default;
 
     await this.ctx.service.address.updateAddress(address);
     this.ctx.body = {
