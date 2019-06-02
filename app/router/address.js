@@ -6,8 +6,6 @@
 module.exports = app => {
   const { router, controller } = app;
 
-  console.log(controller);
-
   router.get('/api/v1/address', controller.address.listAddresses);
   router.get('/api/v1/address/:id', controller.address.getAddressById);
   router.patch('/api/v1/address/:id', controller.address.updateAddressById);

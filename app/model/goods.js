@@ -56,6 +56,10 @@ module.exports = app => {
       reduce_price: {
         type: STRING(16),
       },
+      // price_in_cents: {
+      //   type: INTEGER,
+      //   default: 0,
+      // },
     });
 
   Model.createNewGoods = async goods => {
