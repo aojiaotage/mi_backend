@@ -9,14 +9,13 @@ class Cart extends Service {
     item.img_url = goods.img_url;
     item.price = goods.price;
     item.name = goods.name;
-    console.log(goods.toJSON());
     const created = await this.app.model.Cart.createNewItem(item);
     // await this.app.model.userService.addUserService(item);
     return created;
   }
 
-  async createNewServie(cart) {
-    const created = await this.app.model.Cart.createNewServie(cart);
+  async createNewService(cart) {
+    const created = await this.app.model.Cart.createNewService(cart);
     return created;
   }
 

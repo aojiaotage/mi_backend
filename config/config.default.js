@@ -40,7 +40,6 @@ module.exports = appInfo => {
 
   config.onerror = {
     json(err, ctx) {
-      console.log(err.httpStatusCode);
       const { code, httpStatusCode, httpMsg } = err;
       if (httpStatusCode) ctx.status = httpStatusCode;
       ctx.body = {

@@ -20,7 +20,7 @@ class CartController extends Controller {
     };
   }
 
-  async createNewServie() {
+  async createNewService() {
     // const { cart } = this.ctx.request.body;
     // const created = await this.ctx.service.cart.createNewItem(cart);
     // this.ctx.body = {
