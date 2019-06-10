@@ -44,25 +44,10 @@ class CartController extends Controller {
     };
   }
 
-  async getCartById() {
-    const { id } = this.ctx.params;
-    const query = {
-      ids: [id],
-    };
-    const [cart] = await this.ctx.service.cart.listCarts(query);
-    this.ctx.body = {
-      code: 0,
-      status: 200,
-      data: {
-        cart,
-      },
-    };
-  }
-
   async deleteItemById() {
     const { id } = this.ctx.params;
     const query = {
-      ids: [id],
+      id,
     };
     const result = await this.ctx.service.cart.deleteItemById(query);
     this.ctx.body = {
@@ -85,9 +70,9 @@ class CartController extends Controller {
 
   async editItemById() {
     const { id } = this.ctx.params;
-    const { cart } = this.ctx.request.body;
-    cart.id = id;
-    await this.ctx.service.cart.editItemById(cart);
+    const { item } = this.ctx.request.body;
+    item.id = id;
+    await this.ctx.service.cart.editItemById(item);
     this.ctx.body = {
       code: 0,
       status: 200,

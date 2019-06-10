@@ -24,8 +24,8 @@ class Cart extends Service {
     return updatedRows;
   }
 
-  async editItemById(cart) {
-    const updatedRows = await this.app.model.Cart.editItemById(cart);
+  async editItemById(item) {
+    const updatedRows = await this.app.model.Cart.updateItemById(item);
     return updatedRows;
   }
 
@@ -35,8 +35,10 @@ class Cart extends Service {
   }
 
   async listItems(query) {
-    // const carts = await this.app.model.Cart.listCarts(query);
-    // return carts;
+    const items = await this.app.model.Cart.listItems(query);
+    // const services = await this.app.model.Service.listService(items);
+    // items.services = services;
+    return items;
   }
 
 

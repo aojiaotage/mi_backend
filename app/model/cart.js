@@ -72,7 +72,7 @@ module.exports = app => {
     }
   };
 
-  Model.listCarts = async query => {
+  Model.listItems = async query => {
     const { ids, last_id, sort, limit } = query;
 
     const sequelizeQuery = {};
@@ -92,19 +92,35 @@ module.exports = app => {
     return carts;
   };
 
-  Model.updateCart = async (cart) => {
-    const { id } = cart;
+  Model.updateItemById = async (item) => {
+    const { id } = item;
     // validate id, something
 
-    const updated = await Model.update({
-      where: {
-        id: {
-          [Op.eq]: id,
+    const updated = await Model.update(
+      item,
+      {
+        where: {
+          id: {
+            [Op.eq]: id,
+          },
         },
-      },
-      values: cart,
-    });
+      });
     return updated;
+  };
+
+  Model.deleteItemById = async (item) => {
+    const { id } = item;
+    // validate id, something
+
+    const rows = await Model.destroy(
+      {
+        where: {
+          id: {
+            [Op.eq]: id,
+          },
+        },
+      });
+    return rows;
   };
 
   Model.sync();
