@@ -10,5 +10,6 @@ module.exports = app => {
   require('./user')(app);
   require('./address')(app);
   require('./cart')(app);
+  require('./order')(app);
 
 };

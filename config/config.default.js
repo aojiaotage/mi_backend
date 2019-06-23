@@ -52,7 +52,7 @@ module.exports = appInfo => {
   config.middleware = ['userAuth'];
 
   config.userAuth = {
-    match: ['/api/v1/user', '/api/v1/address', '/api/v1/cart'],
+    match: ['/api/v1/user', '/api/v1/address', '/api/v1/cart', '/api/v1/order'],
   };
 
   return config;
