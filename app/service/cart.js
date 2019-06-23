@@ -38,7 +38,13 @@ class Cart extends Service {
     const items = await this.app.model.Cart.listItems(query);
     // const services = await this.app.model.Service.listService(items);
     // items.services = services;
-    return items;
+
+    return items.map(i => {
+      const obj = i.toJSON();
+      // TODO fake data here
+      obj.serviceInfo = [];
+      return obj;
+    });
   }
 
 

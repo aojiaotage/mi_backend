@@ -34,12 +34,19 @@ class CartController extends Controller {
 
   async listItems() {
     const { query } = this.ctx.request;
-    const carts = await this.ctx.service.cart.listItems(query);
+    const items = await this.ctx.service.cart.listItems(query);
+    items.forEach(i => {
+      i.goodsId = i.goods_id;
+      i.product_name = i.name;
+      i.num = i.nums;
+      // TODO add real price here
+      i.price = 100;
+    });
     this.ctx.body = {
       code: 0,
       status: 200,
       data: {
-        carts,
+        items,
       },
     };
   }
@@ -72,6 +79,7 @@ class CartController extends Controller {
     const { id } = this.ctx.params;
     const { item } = this.ctx.request.body;
     item.id = id;
+    item.nums = item.num;
     await this.ctx.service.cart.editItemById(item);
     this.ctx.body = {
       code: 0,
