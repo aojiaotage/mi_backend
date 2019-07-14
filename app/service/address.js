@@ -26,19 +26,9 @@ class Address extends Service {
 
   async getAddressDetail(id) {
     const [address] = await this.listAddresses({ ids: [id] });
-    const ps = [
-      this.ctx.service.goods.listGoods({ address_id: id }),
-    ];
-
-    // TODO need to check the stock here.
-    // const inventoryInfo = await InventoryService.getGoodsInventoryInfo();
-
-    const [goodsList] = await Promise.all(
-      ps);
 
     return {
       address,
-      goodsList,
     };
   }
 

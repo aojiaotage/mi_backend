@@ -84,11 +84,29 @@ module.exports = app => {
       },
     });
 
-  Model.createNewOrder = async order => {
+  Model.createNewOrder = async ({ user_id, transaction, address, best_time }) => {
     // validate somehow
 
-    order.id = uuid();
-    const created = await Model.create(order);
+    const order = {
+      id: uuid(),
+      user_id,
+      status: 0,
+      consignee: address.consignee,
+      address: address.address,
+      zipcode: address.zipcode,
+      tel: address.tel,
+      province: address.province,
+      province_id: address.province_id,
+      city: address.city,
+      city_id: address.city_id,
+      district: address.district,
+      district_id: address.district_id,
+      area: address.area,
+      area_id: address.area_id,
+      best_time,
+    };
+
+    const created = await Model.create(order, { transaction });
     return created;
   };
 
@@ -112,18 +130,20 @@ module.exports = app => {
     return orders;
   };
 
-  Model.updateOrder = async (order) => {
+  Model.updateOrder = async (order, { transaction }) => {
     const { id } = order;
     // validate id, something
 
-    const updated = await Model.update({
-      where: {
-        id: {
-          [Op.eq]: id,
+    const updated = await Model.update(
+      order,
+      {
+        where: {
+          id: {
+            [Op.eq]: id,
+          },
         },
-      },
-      values: order,
-    });
+        transaction,
+      });
     return updated;
   };
 
