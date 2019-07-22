@@ -63,5 +63,7 @@ module.exports = app => {
   // B端API 通用前缀： /api/v1/admin/
   // 商品
 
+  require('./role')(app);
+  require('./permission')(app);
 
 };

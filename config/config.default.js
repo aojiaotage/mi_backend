@@ -49,10 +49,13 @@ module.exports = appInfo => {
     },
   };
 
-  config.middleware = ['userAuth'];
+  config.middleware = ['userAuth', 'adminAuth'];
 
   config.userAuth = {
     match: ['/api/v1/user', '/api/v1/address', '/api/v1/cart', '/api/v1/order'],
+  };
+  config.adminAuth = {
+    match: ['/api/v1/admin'],
   };
 
   return config;
