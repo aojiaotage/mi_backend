@@ -14,6 +14,12 @@ class User extends Service {
     return found;
   }
 
+  async getUserByPhoneNumber(phoneNumber) {
+    const select = ['id'];
+    const found = await this.ctx.model.User.getUserByPhoneNumber(phoneNumber, select);
+    return found;
+  }
+
   async getUserInfo(userId, opts) {
     const { isUserHimself } = opts;
     const select = ['id'];

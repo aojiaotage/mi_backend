@@ -20,10 +20,16 @@ class SiteController extends Controller {
   }
 
   async loginWithUnPw() {
-    const { username, pwd } = this.ctx.request.body;
+    const { username, pwd, code } = this.ctx.request.body;
 
-    const foundUser = await this.ctx.service.user.loginWithUnPw(username,
-      pwd);
+    let foundUser;
+    if (pwd) {
+      foundUser = await this.ctx.service.user.loginWithUnPw(username,
+        pwd);
+    } else if (code) {
+      await this.ctx.service.sms.validateVCode(username, code);
+      foundUser = await this.ctx.service.user.getUserByPhoneNumber(username);
+    }
 
     this.ctx.session.user = { id: foundUser.id };
 
@@ -54,6 +60,15 @@ class SiteController extends Controller {
       code: 0,
     };
   }
+
+  async sendVerifyCode() {
+    const { phoneNumber } = this.ctx.request.body;
+    await this.ctx.service.sms.sendVCode(phoneNumber);
+    this.ctx.body = {
+      code: 0,
+    };
+  }
+
 }
 
 module.exports = SiteController;

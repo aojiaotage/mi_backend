@@ -133,6 +133,27 @@ module.exports = app => {
     return found.toJSON();
   };
 
+  Model.getUserByPhoneNumber = async (phoneNumber, select) => {
+    const [found] = await Model.findAll({
+      attributes: select,
+      where: {
+        phoneNumber: {
+          [Op.eq]: phoneNumber,
+        },
+      },
+    });
+
+    if (!found) {
+      throw new app.error.InvalidParam(
+        'userId',
+        'no such userId',
+        '用户不存在',
+      );
+    }
+
+    return found.toJSON();
+  };
+
   Model.updateUser = async (userId, user) => {
     const result = await Model.update(user, {
       where: {
