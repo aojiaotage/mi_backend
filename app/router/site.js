@@ -32,5 +32,8 @@ module.exports = app => {
   router.get('/api/v1/site/product/:id', controller.product.getProduct);
 
   router.get('/api/v1/site/nav', controller.site.navList);
+  router.get('/api/v1/site/home', controller.site.homePage);
+  router.get('/api/v1/site/category', controller.site.category);
+  router.get('/api/v1/site/forRecommend', controller.site.forRecommend);
 
 };

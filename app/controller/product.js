@@ -36,10 +36,11 @@ class ProductController extends Controller {
     this.ctx.body = {
       code: 0,
       data: {
-        product: productResult.product,
-        goodsList: productResult.goodsList,
+        product_info: productResult.product,
+        goods_info: productResult.goodsList,
         comments,
         activities,
+        view_content: productResult.view_content,
       },
     };
   }
