@@ -31,4 +31,6 @@ module.exports = app => {
 
   router.get('/api/v1/site/product/:id', controller.product.getProduct);
 
+  router.get('/api/v1/site/nav', controller.site.navList);
+
 };

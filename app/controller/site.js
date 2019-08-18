@@ -69,6 +69,21 @@ class SiteController extends Controller {
     };
   }
 
+  async navList() {
+    this.ctx.body = {
+      code: 0,
+      data: {
+        list: ['推荐', '智能', '电视', '电脑', '手机', '双摄', '全面屏', '生活周边', '盒子']
+          .map((e, i) => {
+            return {
+              page_id: e,
+              name: e,
+            };
+          }),
+      },
+    };
+  }
+
 }
 
 module.exports = SiteController;
