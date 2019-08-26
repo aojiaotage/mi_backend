@@ -9,6 +9,7 @@ class Cart extends Service {
     item.img_url = goods.img_url;
     item.price = goods.price;
     item.name = goods.name;
+    item.product_id = goods.product_id;
     const created = await this.app.model.Cart.createNewItem(item);
     // await this.app.model.userService.addUserService(item);
     return created;

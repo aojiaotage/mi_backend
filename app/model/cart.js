@@ -36,6 +36,9 @@ module.exports = app => {
       nums: {
         type: INTEGER,
       },
+      product_id: {
+        type: UUID,
+      },
     });
 
   Model.createNewItem = async item => {
