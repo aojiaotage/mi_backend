@@ -59,13 +59,12 @@ module.exports = app => {
 
     if (found) {
       found.nums += item.nums;
-      await Model.update(found, {
+      await Model.update(found.toJSON(), {
         where: {
           id: {
             [Op.eq]: found.id,
           },
         },
-        values: found,
       });
       return found;
     } else {

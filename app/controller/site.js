@@ -91,11 +91,11 @@ class SiteController extends Controller {
     const recList = products.map(p => {
       return {
         'action': {
-        'type': 'product',
+          'type': 'product',
           'path': p.id,
           'log_code': 'recom_list_0-1#eid=force_15:0:0:0:0:0:0:0:0:7354&tid=BlankRec-78cpaAwFqwUTL0eVFuqCzg==&page=list&pid=7354',
           'recommend_code': 'recom_list_0-1#eid=force_15:0:0:0:0:0:0:0:0:7354&tid=BlankRec-78cpaAwFqwUTL0eVFuqCzg==&page=list&pid=7354',
-      },
+        },
         'image_url': '//i8.mifile.cn/v1/a1/48af122b-362c-dae5-8305-899805faf635.webp',
         'is_multi_price': false,
         'market_price': '799',
@@ -104,7 +104,7 @@ class SiteController extends Controller {
         'product_desc': `<font color=\'#ff4a00\'>${p.product_desc}`,
         'product_tag': '',
       };
-    })
+    });
 
     this.ctx.body = {
       code: 0,
@@ -130,6 +130,72 @@ class SiteController extends Controller {
         },
         'recom_list': recList,
         'title': '为你推荐',
+      },
+    };
+  }
+
+  async recommend() {
+
+    const products = await this.ctx.service.product.listProducts({ limit: 10 });
+
+    const recList = products.map(p => {
+      return {
+        action: {
+          type: 'product',
+          path: p.id,
+          log_code: 'recom_list_0-1#eid=force_15:0:0:0:0:0:0:0:0:7354&tid=BlankRec-78cpaAwFqwUTL0eVFuqCzg==&page=list&pid=7354',
+          recommend_code: 'recom_list_0-1#eid=force_15:0:0:0:0:0:0:0:0:7354&tid=BlankRec-78cpaAwFqwUTL0eVFuqCzg==&page=list&pid=7354',
+        },
+        image_url: '//i8.mifile.cn/v1/a1/48af122b-362c-dae5-8305-899805faf635.webp',
+        big_image_url: '//i8.mifile.cn/v1/a1/48af122b-362c-dae5-8305-899805faf635.webp',
+        is_multi_price: false,
+        market_price: '799',
+        name: p.name,
+        price: '699',
+        product_desc: `<font color=\'#ff4a00\'>${p.product_desc}`,
+        product_tag: '',
+      };
+    });
+
+    this.ctx.body = {
+      code: 0,
+      data: {
+        recommend_list: recList,
+        title: '为你推荐',
+      },
+    };
+  }
+
+  async estDelivery() {
+
+    let address = {
+      address: '北京市 西城区',
+      id: '',
+    };
+
+    const userId = this.ctx.session.user && this.ctx.session.user.id;
+
+    if (userId) {
+      address = (await this.ctx.service.address.listAddresses(
+        { userIds: [userId] }))[0];
+    }
+
+    this.ctx.body = {
+      code: 0,
+      data: {
+        address: {
+          address: address.address,
+        },
+        address_info: {
+          address: address.address,
+          address_id: address.id,
+        },
+        datas: [
+          {
+            stock_status: '有现货',
+          },
+        ],
+        title: '为你推荐',
       },
     };
   }
