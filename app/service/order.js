@@ -52,7 +52,15 @@ class Order extends Service {
   }
 
   async listOrders(query) {
-    const orders = await this.app.model.Order.listOrders(query);
+    let orders = await this.app.model.Order.listOrders(query);
+    const order_ids = orders.map(o => o.id);
+    const subOrders = await this.app.model.SubOrder.listOrders({ order_ids });
+    orders = orders.map(o => {
+      const obj = o.toJSON();
+      obj.subOrders = subOrders.filter(
+        s => s.order_id.toString() === o.id.toString());
+      return obj;
+    });
     return orders;
   }
 
