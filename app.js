@@ -5,6 +5,8 @@ module.exports = app => {
   app.loader.loadToApp(path.join(app.config.baseDir, 'app/error'), 'error', {
     caseStyle: 'upper',
   });
+
+  loadConsumers(app);
   app.sessionStore = {
     async get(key) {
       const res = await app.redis.get(key);
@@ -21,3 +23,8 @@ module.exports = app => {
     },
   };
 };
+
+function loadConsumers(app) {
+  const unlockConsumer = new (require('./app/consumer/unlock_inventory'))();
+  unlockConsumer.init(app).catch(console.log);
+}
