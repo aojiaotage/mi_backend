@@ -14,6 +14,10 @@ class MsgProducer extends Service {
     };
   }
 
+  static get ['EXCHANGE_NAME']() {
+    return 'MI_DEFAULT_DELAY_EXCHANGE_NAME';
+  }
+
   async initConn() {
     const conn = await rmq.connect(this.app.config.rabbitmq.url);
     this.conn = conn;
@@ -27,11 +31,18 @@ class MsgProducer extends Service {
     await channel.assertQueue(queueName, {
       durable: true,
     });
+    await channel.assertExchange(MsgProducer.EXCHANGE_NAME, 'x-delayed-message',
+      {
+        arguments: {
+          'x-delayed-type': 'direct',
+        },
+      });
+    await channel.bindQueue(queueName, MsgProducer.EXCHANGE_NAME);
     this.channels[queueName] = channel;
     return channel;
   }
 
-  async sendMsg(queueName, msg) {
+  async sendMsg(queueName, msg, opts) {
 
     if (!this.channels) {
       this.channels = {};
@@ -43,11 +54,12 @@ class MsgProducer extends Service {
       channel = await this.initChannel(queueName);
     }
 
-    await channel.sendToQueue(queueName, Buffer.from(msg));
+    await channel.publish(MsgProducer.EXCHANGE_NAME, '', Buffer.from(msg), opts);
   }
 
-  async sendInventoryUnlockMsg(inventoryInfo) {
-    await this.sendMsg(MsgProducer.QUEUE_NAMES.INVENTORY_UNLOCK, JSON.stringify(inventoryInfo));
+  async sendInventoryUnlockMsg(inventoryInfo, opts) {
+    await this.sendMsg(MsgProducer.QUEUE_NAMES.INVENTORY_UNLOCK,
+      JSON.stringify(inventoryInfo), opts);
   }
 
 }

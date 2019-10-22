@@ -24,13 +24,10 @@ class Inventory extends Service {
     const locksKey = Inventory.REDIS_GOODS_LOCKS_PREF + goodsId;
     const locksByOrderHsetKey = Inventory.REDIS_GOODS_LOCKS_BY_ORDER_PREF +
       goodsId;
-    const locksExpKey = Inventory.REDIS_GOODS_LOCKS_BY_ORDER_EXPIRE_PREF +
-      goodsId + ':' + subOrderId;
     // TODO need MQ to do automic release.
     await this.app.redis.incrby(locksKey, amount);
     await this.app.redis.hincrby(locksByOrderHsetKey, subOrderId, amount);
-    await this.app.redis.set(locksExpKey, amount, 'PX',
-      Inventory.DEFAULT_LOCK_EXPIRE_SECONDS);
+    console.log(`locked:${goodsId} by ${subOrderId} amount: ${amount}`);
   }
 
   async getLocksByGoodsId(goodsId) {
@@ -39,16 +36,19 @@ class Inventory extends Service {
     return lockedAmount;
   }
 
-  async removeLocksByGoodsId(goodsId, subOrderId, amount) {
+  async removeLocksByGoodsId(goodsId, subOrderId) {
     const locksKey = Inventory.REDIS_GOODS_LOCKS_PREF + goodsId;
     const locksByOrderHsetKey = Inventory.REDIS_GOODS_LOCKS_BY_ORDER_PREF +
       goodsId;
-    const locksExpKey = Inventory.REDIS_GOODS_LOCKS_BY_ORDER_EXPIRE_PREF +
-      goodsId + ':' + subOrderId;
     const amountByOrderId = await this.app.redis.hget(locksByOrderHsetKey,
       subOrderId);
-    await this.app.redis.del(locksExpKey);
+    if (!amountByOrderId || Number.isNaN(amountByOrderId) ||
+      Number(amountByOrderId) <= 0) {
+      return;
+    }
     await this.app.redis.incrby(locksKey, -1 * amountByOrderId);
+    await this.app.redis.hdel(locksByOrderHsetKey, subOrderId);
+    console.log(`unlocked:${goodsId} by ${subOrderId} amount: ${amountByOrderId}`);
   }
 
   async fillGoodsRealInventory(goodsList) {
