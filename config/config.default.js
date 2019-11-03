@@ -62,5 +62,7 @@ module.exports = appInfo => {
     url: 'amqp://localhost',
   };
 
+  config.wechat = require('../secret/wechat');
+
   return config;
 };
