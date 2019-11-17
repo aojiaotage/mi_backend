@@ -14,6 +14,17 @@ class Wechat extends Service {
       getAT(appId, secret) {
         return `${Wechat.WX_API_PREF}token?grant_type=client_credential&appid=${appId}&secret=${secret}`;
       },
+      getUserList(accessToken, nextOpenId) {
+        return `${Wechat.WX_API_PREF}user/get?access_token=${accessToken}${nextOpenId
+          ? `&next_openid=${nextOpenId}`
+          : ''}`;
+      },
+      getUserInfo(accessToken, openId) {
+        return `${Wechat.WX_API_PREF}user/info?access_token=${accessToken}&openid=${openId}&lang=zh_CN`;
+      },
+      sendCSMsg(accessToken, openId) {
+        return `${Wechat.WX_API_PREF}message/custom/send?access_token=${accessToken}`;
+      },
     };
   }
 
@@ -40,6 +51,40 @@ class Wechat extends Service {
       }
     }
     return token;
+  }
+
+  async getUserListFromWC(nextOpenId) {
+    const token = await this.getATFromWC();
+    const result = await this.app.curl(
+      Wechat.APIS.getUserList(token, nextOpenId), {
+        method: 'GET',
+        dataType: 'json',
+        timeout: 60000,
+      });
+    return result.data;
+  }
+
+  async getUserInfoFromWC(openId) {
+    const token = await this.getATFromWC();
+    const result = await this.app.curl(
+      Wechat.APIS.getUserInfo(token, openId), {
+        method: 'GET',
+        dataType: 'json',
+        timeout: 60000,
+      });
+    return result.data;
+  }
+
+  async sendCSMsgToUser(openId, wcCSData) {
+    const token = await this.getATFromWC();
+    const result = await this.app.curl(
+      Wechat.APIS.sendCSMsg(token), {
+        method: 'POST',
+        dataType: 'json',
+        timeout: 600000,
+        data: JSON.stringify(wcCSData),
+      });
+    return result;
   }
 
 }
