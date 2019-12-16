@@ -22,8 +22,11 @@ class Wechat extends Service {
       getUserInfo(accessToken, openId) {
         return `${Wechat.WX_API_PREF}user/info?access_token=${accessToken}&openid=${openId}&lang=zh_CN`;
       },
-      sendCSMsg(accessToken, openId) {
+      sendCSMsg(accessToken) {
         return `${Wechat.WX_API_PREF}message/custom/send?access_token=${accessToken}`;
+      },
+      sendTemplateMsg(accessToken) {
+        return `${Wechat.WX_API_PREF}message/template/send?access_token=${accessToken}`;
       },
     };
   }
@@ -83,6 +86,23 @@ class Wechat extends Service {
         dataType: 'json',
         timeout: 600000,
         data: JSON.stringify(wcCSData),
+      });
+    return result;
+  }
+
+  async sendTemplateMsgToUser({ openId, templateId, data, url }) {
+    const token = await this.getATFromWC();
+    const result = await this.app.curl(
+      Wechat.APIS.sendTemplateMsg(token), {
+        method: 'POST',
+        dataType: 'json',
+        timeout: 600000,
+        data: JSON.stringify({
+          touser: openId,
+          template_id: templateId,
+          url,
+          data,
+        }),
       });
     return result;
   }
