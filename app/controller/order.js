@@ -80,13 +80,20 @@ class OrderController extends Controller {
       best_time: bestShipTime,
     });
 
+    const prePayInfo = await this.ctx.service.order.createWXOrder();
+
     this.ctx.body = {
       code: 0,
       status: 200,
       data: {
         order: created,
+        prePayInfo,
       },
     };
+  }
+
+  async wxOrderCallback() {
+    await this.ctx.service.order.updateOrderStatusFromWX();
   }
 
   async listOrders() {

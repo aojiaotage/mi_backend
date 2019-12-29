@@ -70,6 +70,22 @@ class Order extends Service {
     return createdOrder;
   }
 
+  async createWXOrder() {
+
+  }
+
+  async updateOrderStatusFromWX() {
+
+  }
+
+  async createAliPayOrder() {
+
+  }
+
+  async createUnionPayOrder() {
+
+  }
+
   async updateOrder(order) {
     const updatedRows = await this.app.model.Order.updateOrder(order);
     return updatedRows;
